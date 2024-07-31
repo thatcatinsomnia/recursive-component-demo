@@ -1,7 +1,11 @@
 export default function App() {
   const folders = [
     {
-      name: 'Document'
+      name: 'Document',
+      folders: [
+        { name: 'Movies' },
+        { name: 'Music' }
+      ]
     },
     {
       name: 'Downloads'
@@ -28,6 +32,17 @@ export default function App() {
                     <FolderIcon />
                     {folder.name} 
                   </span>
+                  <ul className="ml-6">
+                    {/* Add subfolder here */}
+                    {folder.folders?.map(folder => (
+                      <li className="py-0.5" key={folder.name}>
+                        <span className="flex items-center gap-1">
+                          <FolderIcon />
+                          {folder.name} 
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </li>
               ))}
             </ul>
