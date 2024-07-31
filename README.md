@@ -35,3 +35,27 @@ const folders = [
   }
 ];
 ```
+
+3. 將重複部分重構成 component，資料如下:
+```js
+const folders: Folder[] = [
+  {
+    name: 'Home',
+    folders: [
+      {
+        name: 'Document',
+        folders: [
+          { name: 'Movies' },
+          { name: 'Music' }
+        ]
+      },
+      {
+        name: 'Downloads'
+      },
+      {
+        name: 'Photos'
+      }
+    ]
+  }
+];
+```

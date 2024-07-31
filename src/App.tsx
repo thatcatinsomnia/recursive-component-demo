@@ -1,17 +1,29 @@
+import { useState } from 'react';
+
+type Folder = {
+  name: string;
+  folders?: Folder[];
+};
+
 export default function App() {
-  const folders = [
+  const folders: Folder[] = [
     {
-      name: 'Document',
+      name: 'Home',
       folders: [
-        { name: 'Movies' },
-        { name: 'Music' }
+        {
+          name: 'Document',
+          folders: [
+            { name: 'Movies' },
+            { name: 'Music' }
+          ]
+        },
+        {
+          name: 'Downloads'
+        },
+        {
+          name: 'Photos'
+        }
       ]
-    },
-    {
-      name: 'Downloads'
-    },
-    {
-      name: 'Photos'
     }
   ];
 
@@ -19,34 +31,7 @@ export default function App() {
     <div className="pt-8 w-full h-dvh bg-slate-900">
       <div className="pt-8 mx-auto h-screen max-w-lg text-gray-100">
         <ul>
-          <li className="py-0.5">
-            <span className="flex items-center gap-1">
-              <FolderIcon />
-              Home
-            </span>
-            <ul className="ml-6">
-              {/* Add subfolder here */}
-              {folders.map(folder => (
-                <li className="py-0.5" key={folder.name}>
-                  <span className="flex items-center gap-1">
-                    <FolderIcon />
-                    {folder.name} 
-                  </span>
-                  <ul className="ml-6">
-                    {/* Add subfolder here */}
-                    {folder.folders?.map(folder => (
-                      <li className="py-0.5" key={folder.name}>
-                        <span className="flex items-center gap-1">
-                          <FolderIcon />
-                          {folder.name} 
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          </li>
+          {folders.map(folder => <Folder folder={folder} />)}
         </ul>
       </div>
     </div>
@@ -55,5 +40,26 @@ export default function App() {
 
 function FolderIcon({ isOpen = false }: { isOpen?: boolean }) {
   return <span>{isOpen ? '📂' : '📁'}</span>
+}
+
+function Folder({ folder }: { folder: Folder }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsOpen(opened => !opened);
+  };
+
+  return (
+    <li className="py-0.5" key={folder.name}>
+      <button className="flex items-center gap-1" onClick={handleClick}>
+        <FolderIcon isOpen={isOpen} />
+        <span className={isOpen ? 'text-pink-500' : ''}>{folder.name}</span>
+      </button >
+
+      <ul className="ml-6">
+        {isOpen && folder.folders?.map(folder => <Folder folder={folder} />)}
+      </ul>
+    </li>
+  );
 }
 
